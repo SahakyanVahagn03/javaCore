@@ -2,16 +2,20 @@ package homework.forExample;
 
 public class ForExample {
     public static void main(String[] args) {
+        //example1
         for (int i = 0; i < 1000; i++) {
             System.out.print(" -" + (i + 1));
         }
+
         System.out.println();
+        //example2
         for (int i = 1; i <= 100; i++) {
+
             if (i % 2 == 0) {
                 System.out.print(" " + i);
             }
         }
-        //
+        //example3
         System.out.println();
         int[] array = {2,5,8,4,9,3,7};
         int biggest = array[0];
