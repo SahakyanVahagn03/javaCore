@@ -15,5 +15,7 @@ public class Light {
         System.out.print("In " + days);
         System.out.print(" days light will travel about ");
         System.out.print(distance + " miless.");
+        //sdsds
+
     }
 }
