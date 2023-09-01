@@ -11,6 +11,7 @@ public class ForExample {
                 System.out.print(" " + i);
             }
         }
+        //
         System.out.println();
         int[] array = {2,5,8,4,9,3,7};
         int biggest = array[0];
