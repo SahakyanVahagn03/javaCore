@@ -34,7 +34,7 @@ public class DynamicArray {
     // մասիվի index-երրորդ էլեմենտը։ Հակառակ դեպքում վերադարձնել -1։
     public int getByIndex(int index) {
         if (index < 0 || size < index) {
-            System.out.print("you sent invalid index. the index of array must be a correct,index doesn't be big from size and It doesn't small from 0. | ");
+            System.out.print("you sent invalid index. the index of array must be a correct,index doesn't be big from size and It doesn't small from 0. | error ");
             return -1;
         }
         return array[index];
@@ -73,13 +73,13 @@ public class DynamicArray {
                 case 3:
                     System.out.println("give me index and take element by index");
                     int elementByIndex = scanner.nextInt();
-                    dynamicArray.getByIndex(elementByIndex);
+                    System.out.println(dynamicArray.getByIndex(elementByIndex));
                     break;
                 case 4:
                     dynamicArray.print();
                     break;
                 default:
-                    System.out.println("invalid index");
+                    System.out.println("selected number is invalid");
             }
 
         }
