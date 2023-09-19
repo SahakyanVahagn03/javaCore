@@ -1,10 +1,8 @@
-package homework;
+package dynamicArray;
 
 import java.util.Scanner;
 
 public class DynamicArray {
-    // I wrote main in this class, scroll down and will find it :)
-
     //սա մեր հիմնական մասիվն է, որտեղ պահելու ենք ավելացվող էլեմենտները
     private int[] array = new int[10];
     //սա մեր մասիվի մեջ ավելացված էլեմենտների քանակն է
@@ -40,48 +38,12 @@ public class DynamicArray {
         return array[index];
     }
 
+
     //տպել մասիվի ավելացված էլեմենտները
     public void print() {
         for (int i = 0; i < size; i++) {
             System.out.print(array[i] + " ");
         }
         System.out.println();
-    }
-
-
-    // the main starts at this line :)
-    public static void main(String[] args) {
-        DynamicArray dynamicArray = new DynamicArray();
-        Scanner scanner = new Scanner(System.in);
-        boolean bool = true;
-        while (bool) {
-            System.out.println("if you choose 1 you go to outside from program");
-            System.out.println("if you choose 2 you can be add to element in the array");
-            System.out.println("if you choose 3 you can be take element by index");
-            System.out.println("if you choose 4 you can be print all the elements of the array ");
-            int forWrite = scanner.nextInt();
-            switch (forWrite){
-                case 1:
-                    bool = false;
-                    break;
-                case 2:
-                    System.out.println("write number for adding in the array");
-                    int giveNumberForAdd = scanner.nextInt();
-                    dynamicArray.add(giveNumberForAdd);
-                    System.out.println("number already added");
-                    break;
-                case 3:
-                    System.out.println("give me index and take element by index");
-                    int elementByIndex = scanner.nextInt();
-                    System.out.println(dynamicArray.getByIndex(elementByIndex));
-                    break;
-                case 4:
-                    dynamicArray.print();
-                    break;
-                default:
-                    System.out.println("selected number is invalid");
-            }
-
-        }
     }
 }
