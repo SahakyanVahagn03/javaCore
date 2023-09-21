@@ -11,9 +11,7 @@ public class DynamicArray {
     //ստուգել եթե մասիվի մեջ տեղ չկա-> կանչել extend()
     //և ավելացնենք
     public void add(int value) {
-        if (size == array.length) {
-            extend();
-        }
+        checkIfNeedToExtend();
         array[size++] = value;
     }
 
@@ -45,5 +43,63 @@ public class DynamicArray {
             System.out.print(array[i] + " ");
         }
         System.out.println();
+    }
+
+    public void deleteByIndex(int index) {
+        checkIfNeedToExtend();
+        if (index < 0 || size < index) {
+            System.out.println("similar element doesn't exist");
+        } else {
+            for (int i = index; i < size; i++) {
+                array[i] = array[i + 1];
+            }
+            size--;
+        }
+
+    }
+
+    public void set(int index, int value) {
+        if (index > size || index < 0) {
+            System.out.println("the index doesn't exist");
+        } else {
+            array[index] = value;
+        }
+    }
+
+    public void add(int index, int value) {
+        checkIfNeedToExtend();
+        if (index > size || index < 0) {
+            System.out.println("the index doesn't exist");
+        } else {
+            for (int i = size; i >= index; i--) {
+                array[i + 1] = array[i];
+            }
+            array[index] = value;
+            size++;
+        }
+    }
+
+    public boolean exists(int value) {
+        for (int valueOfTheArray : array) {
+            if (valueOfTheArray == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getIndexByValue(int value) {
+        for (int i = 0; i < size; i++) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void checkIfNeedToExtend() {
+        if (size == array.length) {
+            extend();
+        }
     }
 }
