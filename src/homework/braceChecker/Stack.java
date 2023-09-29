@@ -1,6 +1,7 @@
 package homework.braceChecker;
 
 public class Stack {
+    //
     private int[] stack = new int[10];
     private int size;
     private void checkIfNeedToExtend() {

@@ -2,6 +2,7 @@ package homework.braceChecker;
 
 
 public class BraceChecker {
+    ///
     private String text;
     private Stack stack = new Stack();
     private int index;
