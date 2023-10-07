@@ -22,14 +22,40 @@ public class EmployeeDemo {
         System.out.println("employee already created");
     }
 
+    private static void printCommands() {
+        System.out.println("choose 0 for exit");
+        System.out.println("choose 1 for add an employee ");
+        System.out.println("choose 2 for print all of the employees");
+        System.out.println("choose 3 for search an employee by ID ");
+        System.out.println("choose 4 for search an employee by company name  ");
+        System.out.println("choose 5 for delete an employee by id");
+        System.out.println("choose 6 for Changing employee with id ");
+    }
+
+    private static void searchEmployeeByCompanyName() {
+        System.out.println("search employee with name of company");
+        employeeStorage.searchEmployeeWithNameOfCompany(scanner.nextLine());
+    }
+
+    private static void searchEmployeeById() {
+        System.out.println("search employee by Id");
+        employeeStorage.searchEmployeeById(scanner.nextLine());
+    }
+
+    private static void changeAnEmployeeById() {
+        System.out.println("write  employee's  id and  change  of  the data");
+        employeeStorage.ChangeAnEmployeeById(scanner.nextLine());
+    }
+
+    private static void deleteEmployeeById() {
+        System.out.println("send employee's  id for delete");
+        employeeStorage.deleteEmployById(scanner.nextLine());
+    }
+
     public static void main(String[] args) {
         boolean forRun = true;
         while (forRun) {
-            System.out.println("choose 0 for exit");
-            System.out.println("choose 1 for add employee ");
-            System.out.println("choose 2 for print all employees");
-            System.out.println("choose 3 for search employee by ID ");
-            System.out.println("choose 4 for search employee by company name  ");
+            printCommands();
             int forChoose = Integer.parseInt(scanner.nextLine());
             switch (forChoose) {
                 case 0:
@@ -42,12 +68,16 @@ public class EmployeeDemo {
                     employeeStorage.print();
                     break;
                 case 3:
-                    System.out.println("search employee by Id");
-                    employeeStorage.searchEmployeeById(scanner.nextLine());
+                    searchEmployeeById();
                     break;
                 case 4:
-                    System.out.println("search employee with name of company");
-                    employeeStorage.searchEmployeeWithNameOfCompany(scanner.nextLine());
+                    searchEmployeeByCompanyName();
+                    break;
+                case 5:
+                    deleteEmployeeById();
+                    break;
+                case 6:
+                    changeAnEmployeeById();
                     break;
             }
         }
