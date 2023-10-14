@@ -1,5 +1,6 @@
 package homework.medicalCenter.storage;
 
+import homework.employee.Employee;
 import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 import homework.medicalCenter.model.Person;
@@ -7,14 +8,18 @@ import homework.medicalCenter.model.Person;
 public class Storage {
     private Person[] array = new Person[10];
     private int size;
-
+    private void extend() {
+        Person[] tamp = new Person[array.length + 10];
+        if (size >= 0) System.arraycopy(array, 0, tamp, 0, size);
+        array = tamp;
+    }
     public Storage() {
         size = -1;
     }
 
     public void add(Person val) {
         if (size == array.length) {
-
+           extend();
         }
         array[++size] = val;
     }
