@@ -93,7 +93,7 @@ public class Storage {
 
 
     private boolean checkForVisit(Doctor doctor, Date dateOfTheRegister, Patient patient) {
-        return patient.getDoctor() == doctor && patient.getDateOfRegister().getTime() > dateOfTheRegister.getTime()
+        return patient.getDoctor() == doctor && patient.getDateOfVisit().getTime() > dateOfTheRegister.getTime()
                 - patient.getDoctor().getDoctorSTimeOfTheCheck();
     }
 }
