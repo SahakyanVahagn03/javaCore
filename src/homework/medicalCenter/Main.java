@@ -1,33 +1,22 @@
 package homework.medicalCenter;
 
+import homework.medicalCenter.command.Command;
 import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 import homework.medicalCenter.model.Person;
 import homework.medicalCenter.storage.Storage;
+import homework.medicalCenter.util.DateUtil;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public class Main implements Command {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Storage patientStorage = new Storage();
     private static final Storage doctorStorage = new Storage();
-    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy | HH:mm:ss");
+    private static final Date date = new Date();
 
-    private static void printCommand() {
-        System.out.println("Please input 0 for EXIT");
-        System.out.println("Please input 1 for ADD DOCTOR");
-        System.out.println("Please input 2 for SEARCH DOCTOR BY PROFESSION");
-        System.out.println("Please input 3 for DELETE DOCTOR BY ID");
-        System.out.println("Please input 4 for CHANGE DOCTOR BY ID");
-        System.out.println("Please input 5 for ADD PATIENT");
-        System.out.println("Please input 6 for PRINT DOCTOR'S PATIENTS");
-        System.out.println("Please input 7 for PRINT ALL PATIENT");
-        System.out.println("Please input 8 for PRINT ALL DOCTORS");
-        System.out.println("Please input 9 for CHANGE PATENT BY ID");
-        System.out.println("Please input 10 for DELETE PATIENT BY ID");
-    }
 
     private static void addDoctor() {
         System.out.println("please input Doctor's name");
@@ -38,7 +27,10 @@ public class Main {
         String phone = scanner.nextLine();
         System.out.println("please input Doctor's profession");
         String profession = scanner.nextLine();
-        Doctor doctor = new Doctor(name, surname, phone, profession);
+        System.out.println("please input Doctor's  minute for works  any people");
+        int minute = Integer.parseInt(scanner.nextLine());
+
+        Doctor doctor = new Doctor(name, surname, phone, profession, DateUtil.ConvertMinIntoMs(minute));
         doctorStorage.add(doctor);
         System.out.println("Doctor already added");
     }
@@ -64,7 +56,7 @@ public class Main {
         changePersonById(doctor);
     }
 
-    private static void addPatient() {
+    private static void addPatient() throws ParseException {
         doctorStorage.print();
         System.out.println("write a doctor's  id");
         String doctorId = scanner.nextLine();
@@ -79,9 +71,16 @@ public class Main {
         String surname = scanner.nextLine();
         System.out.println("please input Patient's phone number");
         String phone = scanner.nextLine();
-        Patient patient = new Patient(name, surname, phone, dtf.format(LocalDateTime.now()), doctor);
-        patientStorage.add(patient);
+        System.out.println("what are you time would you like to visit, write date like this MM/dd/yyyy | hh:mm");
+        Date dateForVisit = patientStorage.patientSVisit(doctor, DateUtil.StringToDate(scanner.nextLine()));
+        if (dateForVisit == null) {
+            addPatient();
+        } else {
+            Patient patient = new Patient(name, surname, phone, dateForVisit, doctor);
+            patientStorage.add(patient);
+        }
     }
+
 
     private static void printAllPatientsOfDoctor() {
         doctorStorage.print();
@@ -136,43 +135,43 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         boolean isRun = true;
         while (isRun) {
-            printCommand();
+            Command.printCommand();
             String command = scanner.nextLine();
             switch (command) {
-                case "0":
+                case EXIT:
                     isRun = false;
                     break;
-                case "1":
+                case FOR_ADD_DOCTOR:
                     addDoctor();
                     break;
-                case "2":
+                case SEARCH_DOCTOR_BY_PROFESSION:
                     searchDoctorByProfession();
                     break;
-                case "3":
+                case DELETE_DOCTOR_BY_ID:
                     deleteDoctorById();
                     break;
-                case "4":
+                case CHANGE_DOCTOR_BY_ID:
                     changeDoctorById();
                     break;
-                case "5":
+                case FOR_ADD_PATIENT:
                     addPatient();
                     break;
-                case "6":
+                case PRINT_ALL_PATIENT_OF_DOCTOR:
                     printAllPatientsOfDoctor();
                     break;
-                case "7":
+                case FOR_PRINT_ALL_PATIENTS:
                     patientStorage.print();
                     break;
-                case "8":
+                case FOR_PRINT_ALL_DOCTORS:
                     doctorStorage.print();
                     break;
-                case "9":
+                case CHANGE_PATENT_BY_ID:
                     changePatientById();
                     break;
-                case "10":
+                case DELETE_PATIENT_BY_ID:
                     deletePatientById();
                     break;
                 default:

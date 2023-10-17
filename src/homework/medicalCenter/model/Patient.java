@@ -1,16 +1,19 @@
 package homework.medicalCenter.model;
 
 
+import java.util.Date;
+
 public class Patient extends Person {
     private Doctor doctor;
-    private String date;
 
-    public Patient(String name, String surName, String phone, String date, Doctor doctor) {
+    private Date dateOfVisit;
+
+    public Patient(String name, String surName, String phone, Date dateOfVisit, Doctor doctor) {
         setName(name);
         setSurName(surName);
         setPhone(phone);
         this.doctor = doctor;
-        this.date = date;
+        this.dateOfVisit = dateOfVisit;
         setId(String.valueOf(System.nanoTime()));
     }
 
@@ -26,6 +29,15 @@ public class Patient extends Person {
     }
 
 
+
+    public Date getDateOfVisit() {
+        return dateOfVisit;
+    }
+
+    public void setDateOfVisit(Date dateOfVisit) {
+        this.dateOfVisit = dateOfVisit;
+    }
+
     public String toString() {
         return "Patient {" +
                 " id ='" + getId() + '\'' +
@@ -33,7 +45,7 @@ public class Patient extends Person {
                 " surName ='" + getSurName() + '\'' +
                 " phone ='" + getPhone() + '\'' +
                 " doctor ='" + doctor.getName() + " " + doctor.getSurName() + '\'' +
-                " ||date of register ='" + date + '\'' +
+                " ||date of visit= '" + dateOfVisit + '\'' +
                 " } ";
     }
 }
