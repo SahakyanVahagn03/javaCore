@@ -5,15 +5,14 @@ import java.util.Date;
 
 public class Patient extends Person {
     private Doctor doctor;
+    private Date dateForVisit;
 
-    private Date dateOfVisit;
-
-    public Patient(String name, String surName, String phone, Date dateOfVisit, Doctor doctor) {
+    public Patient(String name, String surName, String phone, Date dateForVisit, Doctor doctor) {
         setName(name);
         setSurName(surName);
         setPhone(phone);
         this.doctor = doctor;
-        this.dateOfVisit = dateOfVisit;
+        this.dateForVisit = dateForVisit;
         setId(String.valueOf(System.nanoTime()));
     }
 
@@ -31,11 +30,11 @@ public class Patient extends Person {
 
 
     public Date getDateOfVisit() {
-        return dateOfVisit;
+        return dateForVisit;
     }
 
-    public void setDateOfVisit(Date dateOfVisit) {
-        this.dateOfVisit = dateOfVisit;
+    public void setDateOfVisit(Date dateForVisit) {
+        this.dateForVisit = dateForVisit;
     }
 
     public String toString() {
@@ -45,7 +44,7 @@ public class Patient extends Person {
                 " surName ='" + getSurName() + '\'' +
                 " phone ='" + getPhone() + '\'' +
                 " doctor ='" + doctor.getName() + " " + doctor.getSurName() + '\'' +
-                " ||date of visit= '" + dateOfVisit + '\'' +
+                " ||date of visit= '" + dateForVisit + '\'' +
                 " } ";
     }
 }

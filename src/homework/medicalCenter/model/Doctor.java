@@ -1,11 +1,13 @@
 package homework.medicalCenter.model;
 
+import java.util.Objects;
+
 public class Doctor extends Person{
     private String profession;
-    private long doctorSTimeOfTheCheck;
+    private int doctorSTimeOfTheCheck;
 
 
-    public Doctor(String name, String surName, String phone, String profession, long doctorSTimeOfTheCheck) {
+    public Doctor(String name, String surName, String phone, String profession, int doctorSTimeOfTheCheck) {
         setId(String.valueOf(System.nanoTime()));
         setName(name);
         setSurName(surName);
@@ -18,17 +20,18 @@ public class Doctor extends Person{
         return profession;
     }
 
-    public long getDoctorSTimeOfTheCheck() {
+    public int getDoctorSTimeOfTheCheck() {
         return doctorSTimeOfTheCheck;
     }
 
-    public void setDoctorSTimeOfTheCheck(long doctorSTimeOfTheCheck) {
+    public void setDoctorSTimeOfTheCheck(int doctorSTimeOfTheCheck) {
         this.doctorSTimeOfTheCheck = doctorSTimeOfTheCheck;
     }
 
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
 
     @Override
     public String toString() {
@@ -38,6 +41,7 @@ public class Doctor extends Person{
                 " surName ='" + getSurName() + '\'' +
                 " phone ='" + getPhone() + '\'' +
                 " profession ='" + profession + '\'' +
+                "  working time with any patients ='" + getDoctorSTimeOfTheCheck() + '\'' + "minute" +
                 " } " ;
     }
 }

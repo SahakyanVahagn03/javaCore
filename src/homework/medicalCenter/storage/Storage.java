@@ -4,6 +4,7 @@ import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 import homework.medicalCenter.model.Person;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Storage {
@@ -34,9 +35,8 @@ public class Storage {
     }
 
     public void searchDoctorByProfession(String profession) {
-        if (array[0] instanceof Doctor) {
-            for (int i = 0; i <= size; i++) {
-                Doctor doctor = (Doctor) array[i];
+        for (int i = 0; i <= size; i++) {
+            if (array[i] instanceof Doctor doctor) {
                 if (doctor.getProfession().equals(profession)) {
                     System.out.println(doctor);
                 }
@@ -68,9 +68,8 @@ public class Storage {
     }
 
     public void printAllPatientsByDoctor(Doctor doctor) {
-        if (array[0] instanceof Patient) {
-            for (int i = 0; i <= size; i++) {
-                Patient patient = (Patient) array[i];
+        for (int i = 0; i <= size; i++) {
+            if (array[i] instanceof Patient patient) {
                 if (patient.getDoctor() == doctor) {
                     System.out.println(array[i]);
                 }
@@ -78,22 +77,39 @@ public class Storage {
         }
     }
 
-    public Date patientSVisit(Doctor doctor, Date dateOfTheRegister) {
-        if (array[0] instanceof Patient) {
-            for (int i = 0; i <= size; i++) {
-                Patient patient = (Patient) array[i];
-                if (checkForVisit(doctor, dateOfTheRegister, patient)) {
-                    System.out.println("that time, patient is already exist");
-                    return null;
+//    public Date patientSVisit(Doctor doctor, Date dateOfTheRegister) {
+//
+//        for (int i = 0; i <= size; i++) {
+//            if (array[i] instanceof Patient patient) {
+//                if (checkForVisit(doctor, dateOfTheRegister, patient)) {
+//                    System.out.println("that time, patient is already exist");
+//                    return null;
+//                }
+//            }
+//        }
+//        return dateOfTheRegister;
+//    }
+//
+//
+//    private boolean checkForVisit(Doctor doctor, Date dateOfTheRegister, Patient patient) {
+//        return patient.getDoctor() == doctor && patient.getDateOfVisit().getTime() > dateOfTheRegister.getTime()
+//                - patient.getDoctor().getDoctorSTimeOfTheCheck();
+//    }
+
+    public boolean isValidDate(Doctor doctor, Date dateForVisit) {
+        for (int i = 0; i <= size; i++) {
+            if (array[i] instanceof Patient patient) {
+                if (patient.getDoctor().getId().equals(doctor.getId())) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(patient.getDateOfVisit());
+                    calendar.add(Calendar.MINUTE, patient.getDoctor().getDoctorSTimeOfTheCheck());
+                    Date dateForVisitPlus30Min = calendar.getTime();
+                    if (dateForVisit.before(dateForVisitPlus30Min)) {
+                        return false;
+                    }
                 }
             }
         }
-        return dateOfTheRegister;
-    }
-
-
-    private boolean checkForVisit(Doctor doctor, Date dateOfTheRegister, Patient patient) {
-        return patient.getDoctor() == doctor && patient.getDateOfVisit().getTime() > dateOfTheRegister.getTime()
-                - patient.getDoctor().getDoctorSTimeOfTheCheck();
+        return dateForVisit.after(new Date());
     }
 }

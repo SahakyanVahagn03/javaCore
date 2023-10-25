@@ -10,12 +10,13 @@ import homework.medicalCenter.util.DateUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main implements Command {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Storage patientStorage = new Storage();
     private static final Storage doctorStorage = new Storage();
-    private static final Date date = new Date();
 
 
     private static void addDoctor() {
@@ -23,16 +24,25 @@ public class Main implements Command {
         String name = scanner.nextLine();
         System.out.println("please input Doctor's surname");
         String surname = scanner.nextLine();
-        System.out.println("please input Doctor's phone number");
+        System.out.println("please input Doctor's phone number, phone number must start with (0) and is must be Armenian phone number");
         String phone = scanner.nextLine();
         System.out.println("please input Doctor's profession");
         String profession = scanner.nextLine();
-        System.out.println("please input Doctor's  minute for works  any people");
-        int minute = Integer.parseInt(scanner.nextLine());
-
-        Doctor doctor = new Doctor(name, surname, phone, profession, DateUtil.ConvertMinIntoMs(minute));
+        System.out.println("please input Doctor's working time with any patients");
+        String minute = scanner.nextLine();
+        if (!DateUtil.isMinute(minute) || isPhoneNumberValid(phone)) {
+            addDoctor();
+        }
+        Doctor doctor = new Doctor(name, surname, phone, profession, Integer.parseInt(minute));
         doctorStorage.add(doctor);
         System.out.println("Doctor already added");
+    }
+
+    private static boolean isPhoneNumberValid(String PhoneNumber) {
+        Pattern pattern = Pattern.compile("^\\d{9}$");
+        Matcher matcher = pattern.matcher(PhoneNumber);
+        if (!matcher.matches()) System.err.println("invalid phone number, phone number must be 9 digits and only number");
+        return !matcher.matches();
     }
 
     private static void searchDoctorByProfession() {
@@ -56,7 +66,7 @@ public class Main implements Command {
         changePersonById(doctor);
     }
 
-    private static void addPatient() throws ParseException {
+    private static void addPatient() {
         doctorStorage.print();
         System.out.println("write a doctor's  id");
         String doctorId = scanner.nextLine();
@@ -71,13 +81,21 @@ public class Main implements Command {
         String surname = scanner.nextLine();
         System.out.println("please input Patient's phone number");
         String phone = scanner.nextLine();
+        if (isPhoneNumberValid(phone)){addPatient();}
         System.out.println("what are you time would you like to visit, write date like this MM/dd/yyyy | hh:mm");
-        Date dateForVisit = patientStorage.patientSVisit(doctor, DateUtil.StringToDate(scanner.nextLine()));
-        if (dateForVisit == null) {
+        String date = scanner.nextLine();
+        Date dateForVisit = null;
+        try {
+            dateForVisit = DateUtil.StringToDate(date);
+        } catch (ParseException e) {
+            System.out.println("invalid date");
             addPatient();
-        } else {
-            Patient patient = new Patient(name, surname, phone, dateForVisit, doctor);
+        }
+        Patient patient = new Patient(name, surname, phone, dateForVisit, doctor);
+        if (patientStorage.isValidDate(doctor, dateForVisit)) {
             patientStorage.add(patient);
+        } else {
+            System.err.println(dateForVisit.before(new Date()) ? "error: current time is earlier then time at this moment " : "error:that time already exist");
         }
     }
 
@@ -113,6 +131,8 @@ public class Main implements Command {
         System.out.println("please input person's surname");
         person.setSurName(scanner.nextLine());
         System.out.println("please input person's phone number");
+        String phone = scanner.nextLine();
+        if (!isPhoneNumberValid(phone)){changePersonById(person);}
         person.setPhone(scanner.nextLine());
         if (person instanceof Doctor doctor) {
             System.out.println("please input person's profession");
@@ -135,7 +155,7 @@ public class Main implements Command {
     }
 
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         boolean isRun = true;
         while (isRun) {
             Command.printCommand();
