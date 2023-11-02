@@ -6,8 +6,10 @@ import onlineStore.model.*;
 import onlineStore.storage.Storage;
 import onlineStore.util.CheckUtil;
 
+
 import java.util.Date;
 import java.util.Scanner;
+
 
 public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -75,11 +77,11 @@ public class Main {
     }
 
 
-
     private static void adminPanel() {
         boolean run = true;
-
         while (run) {
+
+
             System.out.println("------------------------------------------------------------------------------------------------");
             System.out.println("'your profile' -> " + currentUser.getName() + " | your Role{" + currentUser.getRole() + "}" + " | user id " + currentUser.getId());
             Command.printAdminsCommand();
@@ -108,9 +110,21 @@ public class Main {
                 case Command.CHANGE_ROL_BY_USER_ID:
                     changeUserRole();
                     break;
+                case Command.CHANGE_ORDER_STATUS:
+                    changeOrderStatus();
+                    break;
             }
         }
 
+    }
+
+    private static void changeOrderStatus() {
+        orderStorage.print();
+        System.out.println("input order id for change");
+        Product product = (Product) orderStorage.changeOrderStatus(SCANNER.nextLine());
+        if (product != null) {
+            praductStorage.removeProductById(product.getId());
+        }
     }
 
     private static void changeUserRole() {
@@ -160,7 +174,6 @@ public class Main {
     private static void userPanel() {
         boolean run = true;
         while (run) {
-            orderStorage.methDelivered(currentUser);
             System.out.println("------------------------------------------------------------------------------------------------");
             System.out.println("'your profile' -> " + currentUser.getName() + " | your Role{" + currentUser.getRole() + "}" + " | user id " + currentUser.getId());
             Command.printUsersCommand();
