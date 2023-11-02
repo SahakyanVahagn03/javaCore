@@ -4,7 +4,7 @@ import onlineStore.command.Command;
 import onlineStore.exception.OutOfStockException;
 import onlineStore.model.*;
 import onlineStore.storage.Storage;
-import onlineStore.util.CheckingUtil;
+import onlineStore.util.CheckUtil;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -42,7 +42,7 @@ public class Main {
         System.out.println("password");
         String password = SCANNER.nextLine();
         User user = (User) userStorage.findUserBYEmail(email);
-        if (CheckingUtil.checkPassword(user, password)) {
+        if (CheckUtil.checkPassword(user, password)) {
             currentUser = user;
             if (user.getRole() == Role.ADMIN) {
                 adminPanel();
@@ -65,13 +65,16 @@ public class Main {
         Object userBYEmail = userStorage.findUserBYEmail(email);
         System.out.println("please input your password");
         String password = SCANNER.nextLine();
-        if (userBYEmail != null || !CheckingUtil.checkEmail(email) || password.isEmpty()) {
+        if (userBYEmail != null || !CheckUtil.checkEmail(email) || password.isEmpty()) {
             System.out.println("this data is incorrect, try again ");
             return;
         }
         userStorage.add(new User(name, email, password, Role.USER));
+        System.out.println("user already registered");
         login();
     }
+
+
 
     private static void adminPanel() {
         boolean run = true;
@@ -83,6 +86,7 @@ public class Main {
             String command = SCANNER.nextLine();
             switch (command) {
                 case Command.LOG_OUT:
+                    currentUser = null;
                     run = false;
                     break;
                 case Command.PRINT_ALL_PRODUCTS:
@@ -137,8 +141,10 @@ public class Main {
         System.out.println();
         System.out.println("add product category");
         String selectedCategory = SCANNER.nextLine();
-        if (!CheckingUtil.isDigit(priceWithStr) || !CheckingUtil.isDigit(stockQtyWithStr) || !CheckingUtil.isDigit(selectedCategory)) {
-            System.err.println("that fields (stock, price and category) "  + " must be only digit");
+        if (!priceWithStr.chars().allMatch(Character::isDigit) ||
+                !stockQtyWithStr.chars().allMatch(Character::isDigit) ||
+                !selectedCategory.chars().allMatch(Character::isDigit)) {
+            System.err.println("that fields (stock, price and category) " + " must be only digit");
             return;
         }
         double price = Double.parseDouble(priceWithStr);
@@ -150,6 +156,7 @@ public class Main {
         }
     }
 
+
     private static void userPanel() {
         boolean run = true;
         while (run) {
@@ -160,6 +167,7 @@ public class Main {
             String command = SCANNER.nextLine();
             switch (command) {
                 case Command.LOG_OUT:
+                    currentUser = null;
                     run = false;
                     break;
                 case Command.PRINT_ALL_PRODUCTS:
@@ -194,7 +202,7 @@ public class Main {
         }
         System.out.println("how many products would you like");
         String countWithStr = SCANNER.nextLine();
-        if (!CheckingUtil.isDigit(countWithStr)) {
+        if (!countWithStr.chars().allMatch(Character::isDigit)) {
             System.err.println("price can't be String -> " + countWithStr);
             return;
         }
@@ -202,7 +210,7 @@ public class Main {
         try {
             totalPayment = praductStorage.costOfTheProduct(product, Double.parseDouble(countWithStr));
         } catch (OutOfStockException e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println(e.getMessage());
         }
         buyProduct(product, totalPayment, Integer.parseInt(countWithStr));
     }
@@ -214,7 +222,7 @@ public class Main {
         }
         System.out.println("select your payment methods");
         String payMeth = SCANNER.nextLine();
-        if (!CheckingUtil.isDigit(payMeth) || paymentMethods.length <= Integer.parseInt(payMeth)) {
+        if (!payMeth.chars().allMatch(Character::isDigit) || paymentMethods.length <= Integer.parseInt(payMeth)) {
             System.err.println("this payment method doesn't exist");
             userPanel();
         }
@@ -228,4 +236,5 @@ public class Main {
             userPanel();
         }
     }
+
 }
