@@ -7,8 +7,43 @@ public class RecursiveFileUtil {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        printSizeOfPackage();
+
+        fileSearch();
     }
+
+
+    //այս մեթոդը պետք է սքաններով վերցնի երկու string.
+    // 1 - path թե որ ֆոլդերում ենք փնտրելու
+    // 2 - fileName - ֆայլի անունը, որը փնտրում ենք։
+    //Որպես արդյունք պտի ծրագիրը տպի true եթե կա էդ ֆայլը էդ պապկի մեջ, false եթե չկա։
+    static void fileSearch() {
+        System.out.println("please input directory path");
+        String path = scanner.nextLine();
+        System.out.println("please input file name ");
+        String fileName = scanner.nextLine();
+        File file = new File(path);
+        if (!(file.exists()) || file.isFile()) {
+            System.out.println(false);
+        } else {
+            System.out.println(recursiveFileSearch(file, fileName) != null);
+        }
+    }
+
+    private static File recursiveFileSearch(File directory, String fileName) {
+        File currentFile = null;
+        File[] items = directory.listFiles();
+        if (items != null) {
+            for (File item : items) {
+                if (item.isDirectory()) {
+                    currentFile = recursiveFileSearch(item, fileName);
+                } else if (item.getName().equals(fileName)) {
+                    return item;
+                }
+            }
+        }
+        return currentFile;
+    }
+
 
     //այս մեթոդը պետք է սքաններով վերցնի երկու string.
     // 1 - path թե որ ֆոլդերում ենք փնտրելու
